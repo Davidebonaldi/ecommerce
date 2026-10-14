@@ -1,0 +1,31 @@
+$kind: http-request
+name: 'POST Register'
+order: 5000
+url: '{{base_url}}/api/auth/register'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Mario Rossi",
+      "email": "mario@test.it",
+      "password": "password123"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Response has user", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.have.property('user');
+      });
+      pm.test("Response has token", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.have.property('token');
+      });

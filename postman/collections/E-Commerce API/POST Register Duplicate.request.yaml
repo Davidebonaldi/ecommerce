@@ -1,0 +1,28 @@
+$kind: http-request
+name: 'POST Register Duplicate'
+order: 5500
+url: '{{base_url}}/api/auth/register'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Mario Rossi",
+      "email": "mario@test.it",
+      "password": "password123"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 409", function () {
+          pm.response.to.have.status(409);
+      });
+      pm.test("Error message mentions email already registered", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.have.property('message');
+          pm.expect(json.message.toLowerCase()).to.include('email');
+      });
