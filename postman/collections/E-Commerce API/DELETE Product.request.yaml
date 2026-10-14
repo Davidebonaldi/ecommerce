@@ -1,0 +1,20 @@
+$kind: http-request
+name: 'DELETE Product'
+order: 11000
+url: '{{base_url}}/api/products/{{new_product_id}}'
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 204 - Prodotto eliminato", function () {
+          pm.response.to.have.status(204);
+      });
+      pm.test("Nessun corpo nella risposta", function () {
+          pm.expect(pm.response.text()).to.be.empty;
+      });

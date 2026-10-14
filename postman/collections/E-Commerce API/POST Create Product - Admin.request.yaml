@@ -1,0 +1,40 @@
+$kind: http-request
+name: 'POST Create Product - Admin'
+order: 9000
+url: '{{base_url}}/api/products'
+method: POST
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "category_id": 1,
+      "name": "Tastiera meccanica",
+      "description": "Switch rossi, layout italiano",
+      "price": 79.90,
+      "stock": 15
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 201 - Prodotto creato", function () {
+          pm.response.to.have.status(201);
+      });
+      pm.test("Body contiene il prodotto con id", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.have.property('id');
+          pm.expect(json.name).to.equal("Tastiera meccanica");
+          pm.expect(Number(json.price)).to.equal(79.9);
+      });
+      const json = pm.response.json();
+      if (json.id) {
+          pm.environment.set('new_product_id', json.id);
+      }

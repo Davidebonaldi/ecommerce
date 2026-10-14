@@ -1,0 +1,29 @@
+$kind: http-request
+name: 'POST Create Product - No Token'
+order: 7000
+url: '{{base_url}}/api/products'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "category_id": 1,
+      "name": "Tastiera meccanica",
+      "description": "Switch rossi, layout italiano",
+      "price": 79.90,
+      "stock": 15
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 401 - Token mancante", function () {
+          pm.response.to.have.status(401);
+      });
+      pm.test("Body contiene 'Token mancante'", function () {
+          const json = pm.response.json();
+          pm.expect(json.message).to.equal("Token mancante");
+      });

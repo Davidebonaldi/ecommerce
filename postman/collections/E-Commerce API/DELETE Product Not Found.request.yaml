@@ -1,0 +1,21 @@
+$kind: http-request
+name: 'DELETE Product Not Found'
+order: 12000
+url: '{{base_url}}/api/products/999'
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 404 - Prodotto non trovato", function () {
+          pm.response.to.have.status(404);
+      });
+      pm.test("Body contiene messaggio di errore", function () {
+          const json = pm.response.json();
+          pm.expect(json.message).to.equal("Prodotto non trovato");
+      });

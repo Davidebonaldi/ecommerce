@@ -1,0 +1,35 @@
+$kind: http-request
+name: 'PUT Update Product'
+order: 10000
+url: '{{base_url}}/api/products/{{new_product_id}}'
+method: PUT
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{token}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "category_id": 1,
+      "name": "Tastiera meccanica RGB",
+      "description": "Switch rossi, layout italiano, retroilluminazione RGB",
+      "price": 89.90,
+      "stock": 10
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 200 - Prodotto aggiornato", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Body contiene i dati aggiornati", function () {
+          const json = pm.response.json();
+          pm.expect(json.name).to.equal("Tastiera meccanica RGB");
+          pm.expect(Number(json.price)).to.equal(89.9);
+      });

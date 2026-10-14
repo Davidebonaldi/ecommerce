@@ -35,3 +35,28 @@ export async function getProductById(id) {
   );
   return rows[0] || null;
 }
+
+export async function createProduct({ category_id, name, description, price, stock, image_url }) {
+    const [result] = await pool.query(
+      `INSERT INTO products (category_id, name, description, price, stock, image_url)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [category_id, name, description ?? null, price, stock ?? 0, image_url ?? null]
+    );
+    return getProductById(result.insertId);
+  }
+  
+  export async function updateProduct(id, { category_id, name, description, price, stock, image_url }) {
+    const [result] = await pool.query(
+      `UPDATE products
+       SET category_id = ?, name = ?, description = ?, price = ?, stock = ?, image_url = ?
+       WHERE id = ?`,
+      [category_id, name, description ?? null, price, stock ?? 0, image_url ?? null, id]
+    );
+    if (result.affectedRows === 0) return null;
+    return getProductById(id);
+  }
+  
+  export async function deleteProduct(id) {
+    const [result] = await pool.query("DELETE FROM products WHERE id = ?", [id]);
+    return result.affectedRows > 0;
+  }

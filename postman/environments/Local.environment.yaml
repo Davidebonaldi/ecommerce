@@ -1,6 +1,8 @@
-$schema: 'https://schema.getpostman.com/environment/v1'
-name: 'Local'
+name: Local
 values:
   - key: base_url
     value: 'http://localhost:3000'
-    enabled: true
+  - key: token
+    value: ''
+  - key: new_product_id
+    value: ''
