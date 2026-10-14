@@ -1,0 +1,3 @@
+$kind: collection
+name: 'E-Commerce API'
+description: 'GET requests for testing the E-Commerce API endpoints'
