@@ -1,0 +1,15 @@
+$kind: http-request
+name: DELETE Category
+order: 5500
+url: '{{base_url}}/api/categories/3'
+method: DELETE
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 204 No Content", function () {
+        pm.response.to.have.status(204);
+      });

@@ -1,0 +1,25 @@
+$kind: http-request
+name: POST Create Category Empty Body
+order: 5200
+url: '{{base_url}}/api/categories'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: 'Bearer {{token}}'
+body:
+  type: json
+  content: '{}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 400 Bad Request", function () {
+        pm.response.to.have.status(400);
+      });
+
+      pm.test("Response has error message", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property("error");
+      });

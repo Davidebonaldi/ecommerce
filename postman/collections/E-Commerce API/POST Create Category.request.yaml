@@ -1,0 +1,33 @@
+$kind: http-request
+name: POST Create Category
+order: 5000
+url: '{{base_url}}/api/categories'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: 'Bearer {{token}}'
+body:
+  type: json
+  content: |-
+    {
+      "name": "Casa e Giardino"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 201 Created", function () {
+        pm.response.to.have.status(201);
+      });
+
+      pm.test("Response has slug 'casa-e-giardino'", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property("slug", "casa-e-giardino");
+      });
+
+      pm.test("Response has name 'Casa e Giardino'", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property("name", "Casa e Giardino");
+      });

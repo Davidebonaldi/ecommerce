@@ -1,21 +1,18 @@
 $kind: http-request
-name: 'POST Login'
 order: 6000
-url: '{{base_url}}/api/auth/login'
+url: "{{base_url}}/api/auth/login"
 method: POST
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "email": "mario@test.it",
+      "email": "davide@test.it",
       "password": "password123"
     }
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       pm.test("Status code is 200", function () {
           pm.response.to.have.status(200);
@@ -32,3 +29,4 @@ scripts:
       if (json.token) {
           pm.environment.set("token", json.token);
       }
+    language: text/javascript

@@ -1,0 +1,20 @@
+$kind: http-request
+name: DELETE Category With Products
+order: 5400
+url: '{{base_url}}/api/categories/1'
+method: DELETE
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 409 Conflict - category has products", function () {
+        pm.response.to.have.status(409);
+      });
+
+      pm.test("Response has error message", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property("error");
+      });

@@ -1,0 +1,28 @@
+$kind: http-request
+name: POST Create Category Duplicate
+order: 5100
+url: '{{base_url}}/api/categories'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+  - key: Authorization
+    value: 'Bearer {{token}}'
+body:
+  type: json
+  content: |-
+    {
+      "name": "Casa e Giardino"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 409 Conflict", function () {
+        pm.response.to.have.status(409);
+      });
+
+      pm.test("Response has error message about duplicate", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property("error");
+      });

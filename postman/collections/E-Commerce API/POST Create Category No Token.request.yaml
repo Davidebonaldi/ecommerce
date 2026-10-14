@@ -1,0 +1,26 @@
+$kind: http-request
+name: POST Create Category No Token
+order: 5700
+url: '{{base_url}}/api/categories'
+method: POST
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Test Senza Token"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status 401 Unauthorized", function () {
+        pm.response.to.have.status(401);
+      });
+
+      pm.test("Response has error message", function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property("error");
+      });
