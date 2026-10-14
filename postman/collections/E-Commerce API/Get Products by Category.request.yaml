@@ -1,0 +1,19 @@
+$kind: http-request
+name: 'Get Products by Category'
+order: 1500
+url: '{{base_url}}/api/products'
+method: GET
+queryParams:
+  - key: category
+    value: elettronica
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+      pm.test("Response is an array", function () {
+          const json = pm.response.json();
+          pm.expect(json).to.be.an('array');
+      });
