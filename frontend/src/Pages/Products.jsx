@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import ProductCard from "../components/ProductCard";
+import { useSearchParams } from "react-router-dom";
+import ProductSkeleton from "../components/ProductSkeleton";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category") || "";
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  
 
   useEffect(() => {
     api("/categories").then(setCategories).catch(() => {});
@@ -69,16 +73,14 @@ export default function Products() {
       </div>
 
       {error && <p className="mt-8 text-red-600">{error}</p>}
-      {loading && <p className="mt-8 text-stone-500">Caricamento...</p>}
+      <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {loading
+          ? Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)
+          : products.map((p) => <ProductCard key={p.id} product={p} />)}
+      </div>
       {!loading && !error && products.length === 0 && (
         <p className="mt-8 text-stone-500">Nessun prodotto trovato.</p>
       )}
-
-      <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
-      </div>
     </div>
   );
 }
