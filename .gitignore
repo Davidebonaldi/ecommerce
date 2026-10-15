@@ -1,12 +1,9 @@
-@"
-node_modules/
+﻿node_modules/
 .env
 dist/
 *.log
 .DS_Store
-"@ | Out-File -Encoding utf8 .gitignore
-Add-Content .gitignore "postman/environments/"
-Add-Content .gitignore "postman/globals/"backend/uploads/*
-
+backend/uploads/*
+!backend/uploads/.gitkeep
 postman/environments/
 postman/globals/
