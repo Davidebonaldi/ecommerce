@@ -6,6 +6,7 @@ import pool from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.get("/api/health", async (req, res) => {
   try {
