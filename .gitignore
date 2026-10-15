@@ -7,3 +7,5 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 postman/environments/
 postman/globals/
+
+.postman/
