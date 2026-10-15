@@ -6,6 +6,12 @@ export async function register(req, res) {
     if (!name || !email || !password) {
       return res.status(400).json({ message: "Nome, email e password sono obbligatori" });
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ message: "Email non valida" });
+    }
+    if (name.length > 100) {
+      return res.status(400).json({ message: "Nome troppo lungo" });
+    }
     if (password.length < 8) {
       return res.status(400).json({ message: "La password deve avere almeno 8 caratteri" });
     }
