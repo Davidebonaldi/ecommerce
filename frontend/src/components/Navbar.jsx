@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
@@ -10,44 +11,67 @@ const linkClass = ({ isActive }) =>
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { count } = useCart();
+  const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
+
+  const links = (
+    <>
+      <NavLink to="/" end className={linkClass} onClick={close}>Home</NavLink>
+      <NavLink to="/products" className={linkClass} onClick={close}>Prodotti</NavLink>
+      <NavLink to="/cart" className={linkClass} onClick={close}>
+        Carrello
+        {count > 0 && (
+          <span className="ml-1.5 rounded-full bg-indigo-600 px-2 py-0.5 text-xs text-white">{count}</span>
+        )}
+      </NavLink>
+      {user ? (
+        <>
+          {user.role === "admin" && (
+            <NavLink to="/admin" className={linkClass} onClick={close}>Admin</NavLink>
+          )}
+          <NavLink to="/orders" className={linkClass} onClick={close}>Ordini</NavLink>
+          <NavLink to="/profile" className={linkClass} onClick={close}>
+            Ciao, {user.name.split(" ")[0]}
+          </NavLink>
+          <button
+            onClick={() => { logout(); close(); }}
+            className="rounded-full border border-stone-300 px-4 py-1.5 text-sm font-medium hover:bg-stone-100"
+          >
+            Esci
+          </button>
+        </>
+      ) : (
+        <NavLink to="/login" onClick={close}
+          className="rounded-full bg-stone-900 px-4 py-1.5 text-center text-sm font-medium text-white hover:bg-stone-700">
+          Accedi
+        </NavLink>
+      )}
+    </>
+  );
 
   return (
     <header className="sticky top-0 z-10 border-b border-stone-200 bg-white/80 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link to="/" className="text-xl font-bold tracking-tight">
+        <Link to="/" className="text-xl font-bold tracking-tight" onClick={close}>
           shop<span className="text-indigo-600">.</span>
         </Link>
-        <nav className="flex items-center gap-6">
-          <NavLink to="/" end className={linkClass}>Home</NavLink>
-          <NavLink to="/products" className={linkClass}>Prodotti</NavLink>
-          <NavLink to="/cart" className={linkClass}>
-            Carrello
-            {count > 0 && (
-              <span className="ml-1.5 rounded-full bg-indigo-600 px-2 py-0.5 text-xs text-white">{count}</span>
-            )}
-          </NavLink>
-          {user ? (
-            <>
-            {user.role === "admin" && (
-          <NavLink to="/admin" className={linkClass}>Amministratore</NavLink>
-            )}
-              <NavLink to="/orders" className={linkClass}>Ordini</NavLink>
-<NavLink to="/profile" className="text-sm text-stone-500 hover:text-stone-900">
-  Ciao, {user.name.split(" ")[0]}
-</NavLink>
-              <button onClick={logout}
-                className="rounded-full border border-stone-300 px-4 py-1.5 text-sm font-medium hover:bg-stone-100">
-                Esci
-              </button>
-            </>
-          ) : (
-            <NavLink to="/login"
-              className="rounded-full bg-stone-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-stone-700">
-              Accedi
-            </NavLink>
-          )}
-        </nav>
+
+        <nav className="hidden items-center gap-6 md:flex">{links}</nav>
+
+        <button
+          onClick={() => setOpen(!open)}
+          className="rounded-lg p-2 hover:bg-stone-100 md:hidden"
+          aria-label="Menu"
+        >
+          {open ? "✕" : "☰"}
+        </button>
       </div>
+
+      {open && (
+        <nav className="flex flex-col gap-4 border-t border-stone-200 bg-white px-4 py-4 md:hidden">
+          {links}
+        </nav>
+      )}
     </header>
   );
 }

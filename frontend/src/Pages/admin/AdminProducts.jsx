@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api, formatPrice } from "../../services/api";
+import { api, formatPrice, uploadImage } from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
 
 const empty = { category_id: "", name: "", description: "", price: "", stock: 0, image_url: "" };
@@ -24,6 +24,18 @@ export default function AdminProducts() {
   }, []);
 
   const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+
+  async function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    setError("");
+    try {
+      const url = await uploadImage(file, token);
+      setForm((f) => ({ ...f, image_url: url }));
+    } catch (err) {
+      setError(err.message);
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -88,6 +100,15 @@ export default function AdminProducts() {
         <input required type="number" step="0.01" min="0" value={form.price} onChange={set("price")} placeholder="Prezzo" className={inputClass} />
         <input required type="number" min="0" value={form.stock} onChange={set("stock")} placeholder="Stock" className={inputClass} />
         <input value={form.image_url} onChange={set("image_url")} placeholder="URL immagine (facoltativo)" className={`${inputClass} sm:col-span-2`} />
+
+        <div className="flex items-center gap-3 sm:col-span-2">
+          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFile}
+            className="text-sm file:mr-3 file:rounded-full file:border-0 file:bg-stone-900 file:px-4 file:py-2 file:text-sm file:text-white" />
+          {form.image_url && (
+            <img src={form.image_url} alt="Anteprima" className="h-12 w-12 rounded-lg object-cover" />
+          )}
+        </div>
+
         <textarea value={form.description} onChange={set("description")} placeholder="Descrizione" rows={3} className={`${inputClass} sm:col-span-2`} />
         <div className="flex gap-2 sm:col-span-2">
           <button className="rounded-full bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-700">

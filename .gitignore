@@ -6,4 +6,4 @@ dist/
 .DS_Store
 "@ | Out-File -Encoding utf8 .gitignore
 Add-Content .gitignore "postman/environments/"
-Add-Content .gitignore "postman/globals/"
+Add-Content .gitignore "postman/globals/"backend/uploads/*

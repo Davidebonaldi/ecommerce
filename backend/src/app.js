@@ -1,24 +1,19 @@
-import productRoutes from "./routes/productRoutes.js";
-import categoryRoutes from "./routes/categoryRoutes.js";
 import express from "express";
 import cors from "cors";
 import pool from "./config/db.js";
+import productRoutes from "./routes/productRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
+import { UPLOAD_DIR } from "./middleware/upload.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.use("/api/products", productRoutes);
-app.use("/api/categories", categoryRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/cart", cartRoutes);
-app.use("/api/orders", orderRoutes);
-app.use("/api/admin", adminRoutes);
 
 app.get("/api/health", async (req, res) => {
   try {
@@ -28,6 +23,16 @@ app.get("/api/health", async (req, res) => {
     res.status(500).json({ status: "error", message: err.message });
   }
 });
+
+app.use("/uploads", express.static(UPLOAD_DIR));
+
+app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/upload", uploadRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
