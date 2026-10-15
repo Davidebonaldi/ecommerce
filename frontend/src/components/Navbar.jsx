@@ -28,7 +28,10 @@ export default function Navbar() {
           </NavLink>
           {user ? (
             <>
-              <span className="text-sm text-stone-500">Ciao, {user.name.split(" ")[0]}</span>
+              <NavLink to="/orders" className={linkClass}>Ordini</NavLink>
+<NavLink to="/profile" className="text-sm text-stone-500 hover:text-stone-900">
+  Ciao, {user.name.split(" ")[0]}
+</NavLink>
               <button onClick={logout}
                 className="rounded-full border border-stone-300 px-4 py-1.5 text-sm font-medium hover:bg-stone-100">
                 Esci

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { formatPrice } from "../services/api";
@@ -8,6 +8,7 @@ export default function Cart() {
   const { user } = useAuth();
   const { cart, updateItem, removeItem } = useCart();
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   if (!user) {
     return (
@@ -68,9 +69,11 @@ export default function Cart() {
               <span>{formatPrice(cart.total)}</span>
             </div>
             {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-            <button disabled
-              className="mt-6 w-full rounded-xl bg-stone-300 py-3 font-semibold text-white">
-              Checkout (prossimo task)
+            <button
+              onClick={() => navigate("/checkout")}
+              className="mt-6 w-full rounded-xl bg-indigo-600 py-3 font-semibold text-white hover:bg-indigo-700"
+            >
+              Vai al checkout
             </button>
           </aside>
         </div>
