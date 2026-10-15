@@ -28,6 +28,9 @@ export default function Navbar() {
           </NavLink>
           {user ? (
             <>
+            {user.role === "admin" && (
+          <NavLink to="/admin" className={linkClass}>Amministratore</NavLink>
+            )}
               <NavLink to="/orders" className={linkClass}>Ordini</NavLink>
 <NavLink to="/profile" className="text-sm text-stone-500 hover:text-stone-900">
   Ciao, {user.name.split(" ")[0]}

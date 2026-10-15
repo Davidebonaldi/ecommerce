@@ -1,3 +1,8 @@
+import AdminLayout from "./layouts/AdminLayout";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AdminCategories from "./pages/admin/AdminCategories";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminUsers from "./pages/admin/AdminUsers";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
@@ -32,7 +37,15 @@ export default function App() {
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/orders/:id" element={<OrderDetail />} />
                 <Route path="/profile" element={<Profile />} />
-            </Route>
+              </Route>
+              <Route element={<ProtectedRoute adminOnly />}>
+                <Route element={<AdminLayout />}>
+                  <Route path="/admin" element={<AdminProducts />} />
+                  <Route path="/admin/categories" element={<AdminCategories />} />
+                  <Route path="/admin/orders" element={<AdminOrders />} />
+                  <Route path="/admin/users" element={<AdminUsers />} />
+                </Route>
+              </Route>
             </Route>
           </Routes>
         </CartProvider>
