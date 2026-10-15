@@ -7,3 +7,6 @@ dist/
 "@ | Out-File -Encoding utf8 .gitignore
 Add-Content .gitignore "postman/environments/"
 Add-Content .gitignore "postman/globals/"backend/uploads/*
+
+postman/environments/
+postman/globals/

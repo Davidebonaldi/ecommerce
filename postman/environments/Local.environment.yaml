@@ -1,8 +1,0 @@
-name: Local
-values:
-  - key: base_url
-    value: 'http://localhost:3000'
-  - key: token
-    value: ''
-  - key: new_product_id
-    value: ''
