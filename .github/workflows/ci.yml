@@ -21,10 +21,12 @@ jobs:
           --health-interval=5s
           --health-timeout=5s
           --health-retries=20
-    env:
+        env:
       DB_HOST: 127.0.0.1
       DB_USER: root
       DB_PASSWORD: ""
+      DB_NAME: ecommerce_test
+      JWT_SECRET: chiave_di_test_lunga_almeno_16
     defaults:
       run:
         working-directory: backend
