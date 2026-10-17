@@ -1,16 +1,16 @@
 server {
-  listen 80;
+  listen ${PORT};
   client_max_body_size 5m;
 
   root /usr/share/nginx/html;
   index index.html;
 
   location /api/ {
-    proxy_pass http://backend:3000;
+    proxy_pass ${BACKEND_URL};
   }
 
   location /uploads/ {
-    proxy_pass http://backend:3000;
+    proxy_pass ${BACKEND_URL};
   }
 
   location / {
