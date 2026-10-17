@@ -10,6 +10,8 @@ Shop online completo con catalogo, carrello, checkout transazionale e pannello d
 > Puoi registrarti, aggiungere prodotti al carrello e completare un ordine.
 
 ![Home](docs/screenshots/home.png)
+![Home](docs/screenshots/home2.png)
+![Prodotti](docs/screenshots/home2.png)
 
 ## Stack
 
