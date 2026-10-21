@@ -4,7 +4,7 @@
 
 Shop online completo con catalogo, carrello, checkout transazionale e pannello di amministrazione.
 
-**🔗 Demo online: https://frontend-production-4770.up.railway.app/**
+**🔗 Demo online: https://davide-shop.up.railway.app/**
 
 > Account demo (cliente): `demo@shop.it` / `Demo12345`
 > Puoi registrarti, aggiungere prodotti al carrello e completare un ordine.
